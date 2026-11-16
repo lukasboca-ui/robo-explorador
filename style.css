@@ -1,0 +1,259 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #12161f;
+    color: #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    color: #38bdf8;
+    margin-bottom: 5px;
+}
+
+.container {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+/* Painel Lateral */
+.painel-info {
+    background-color: #1e293b;
+    padding: 20px;
+    border-radius: 12px;
+    width: 280px;
+    border: 1px solid #334155;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.painel-info h2 {
+    color: #38bdf8;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #334155;
+    padding-bottom: 8px;
+}
+
+.painel-info p {
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+.controles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #0284c7;
+    color: white;
+    transition: transform 0.1s, background-color 0.2s;
+}
+
+button:hover {
+    background-color: #0369a1;
+}
+
+button:active {
+    transform: scale(0.96);
+}
+
+#btn-auto {
+    grid-column: span 2;
+    background-color: #7c3aed;
+}
+
+#btn-auto:hover {
+    background-color: #6d28d9;
+}
+
+.legenda {
+    background-color: #0f172a;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+/* Área do Cenário */
+.area-simulacao {
+    position: relative;
+}
+
+#cenario {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    background-color: #1e293b;
+    background-image: radial-gradient(#334155 1px, transparent 1px);
+    background-size: 50px 50px; /* Grade de 10x10 blocos de 50px */
+    border: 4px solid #38bdf8;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);
+}
+
+/* Elementos do Cenário */
+.celula {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.partida {
+    background-color: rgba(56, 189, 248, 0.25);
+    border: 2px dashed #38bdf8;
+}
+
+/* Elemento Animado 1: Destino pulsante */
+.destino {
+    background-color: rgba(34, 197, 94, 0.3);
+    border: 2px solid #22c55e;
+    animation: pulsarDestino 1.5s infinite alternate;
+}
+
+@keyframes pulsarDestino {
+    from { box-shadow: inset 0 0 5px #22c55e; }
+    to { box-shadow: inset 0 0 20px #22c55e; }
+}
+
+/* Obstáculos */
+.obstaculo {
+    background-color: #475569;
+    border: 2px solid #64748b;
+    border-radius: 6px;
+    font-size: 24px;
+}
+
+/* Elemento Animado 2: Robô Explorador */
+#robo {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    margin: 3px;
+    background-color: #f59e0b;
+    border-radius: 10px;
+    border: 2px solid #fef08a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: left 0.15s ease, top 0.15s ease;
+    z-index: 10;
+}
+
+/* Antena piscante do Robô */
+#robo::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background-color: #ef4444;
+    border-radius: 50%;
+    position: absolute;
+    top: -6px;
+    animation: piscarAntena 0.6s infinite alternate;
+}
+
+@keyframes piscarAntena {
+    from { background-color: #ef4444; box-shadow: 0 0 2px #ef4444; }
+    to { background-color: #fca5a5; box-shadow: 0 0 10px #ef4444; }
+}
+
+.visor-robo {
+    width: 30px;
+    height: 12px;
+    background-color: #0f172a;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.olho {
+    width: 6px;
+    height: 6px;
+    background-color: #38bdf8;
+    border-radius: 50%;
+}
+
+/* Elemento Animado 3: Drone de Patrulha */
+.drone {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    background-color: #e11d48;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 0 12px #e11d48;
+    z-index: 5;
+    animation: girarDrone 2s linear infinite;
+}
+
+@keyframes girarDrone {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Tela de Vitória */
+#mensagem-vitoria {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 23, 42, 0.92);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 20;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+#mensagem-vitoria h2 {
+    color: #22c55e;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+#mensagem-vitoria p {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+.oculto {
+    display: none !important;
+}
