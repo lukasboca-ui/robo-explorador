@@ -1,16 +1,19 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Tema 7 - Robô Explorador</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <header>
         <h1>🤖 Missão: Robô Explorador</h1>
+
         <p>
             Guie o robô até a Base de Recarga usando as
             <strong>setas do teclado</strong> ou ative o
@@ -20,52 +23,89 @@
 
     <main class="container">
 
+        <!-- Painel de informações -->
         <aside class="painel-info">
+
             <h2>📊 Telemetria</h2>
 
-            <p><strong>Status:</strong>
+            <p>
+                <strong>Status:</strong>
                 <span id="status-texto">Aguardando início...</span>
             </p>
 
-            <p><strong>Modo:</strong>
+            <p>
+                <strong>Modo:</strong>
                 <span id="modo-texto">Manual</span>
             </p>
 
-            <p><strong>Passos:</strong>
+            <p>
+                <strong>Passos:</strong>
                 <span id="contador-passos">0</span>
             </p>
 
-            <p><strong>Colisões:</strong>
+            <p>
+                <strong>Colisões:</strong>
                 <span id="contador-colisoes">0</span>
             </p>
 
+            <!-- Controles -->
             <div class="controles">
-                <button id="btn-iniciar">▶ Iniciar</button>
-                <button id="btn-pausar">⏸ Pausar</button>
-                <button id="btn-reiniciar">🔄 Reiniciar</button>
-                <button id="btn-auto">🤖 Piloto Automático</button>
+
+                <button id="btn-iniciar">
+                    ▶ Iniciar
+                </button>
+
+                <button id="btn-pausar">
+                    ⏸ Pausar
+                </button>
+
+                <button id="btn-reiniciar">
+                    🔄 Reiniciar
+                </button>
+
+                <button id="btn-auto">
+                    🤖 Piloto Automático
+                </button>
+
             </div>
 
+            <!-- Legenda -->
             <div class="legenda">
+
                 <h3>Legenda:</h3>
+
                 <p>🟦 Partida</p>
                 <p>🟩 Destino</p>
                 <p>🧱 Rocha (Obstáculo fixo)</p>
                 <p>⚡ Drone Patrulha (Obstáculo móvel)</p>
                 <p>🤖 Robô Explorador</p>
+
             </div>
+
+            <p class="dica">
+                💡 Utilize as setas do teclado para movimentar o robô.
+            </p>
+
         </aside>
 
+        <!-- Área da animação -->
         <section class="area-simulacao">
 
             <div id="cenario"></div>
 
+            <!-- Tela de vitória -->
             <div id="mensagem-vitoria" class="oculto">
+
                 <h2>🎉 Missão Concluída!</h2>
-                <p>O Robô Explorador chegou ao destino com sucesso!</p>
+
+                <p>
+                    O Robô Explorador chegou à Base de Recarga!
+                </p>
+
                 <button id="btn-jogar-novamente">
                     Jogar Novamente
                 </button>
+
             </div>
 
         </section>
@@ -73,5 +113,6 @@
     </main>
 
     <script src="script.js"></script>
+
 </body>
 </html>
