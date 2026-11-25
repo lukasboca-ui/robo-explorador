@@ -1,6 +1,6 @@
 
 // ==========================================
-// 1. CONFIGURAÇÕES
+// 1. CONFIGURAÇÕES DO JOGO
 // ==========================================
 
 const LINHAS = 10;
@@ -56,7 +56,7 @@ const colisoesTexto = document.getElementById('contador-colisoes');
 const msgVitoria = document.getElementById('mensagem-vitoria');
 
 // ==========================================
-// 3. CONSTRUIR CENÁRIO
+// 3. CONSTRUIR O MAPA
 // ==========================================
 
 function construirCenario() {
@@ -67,6 +67,7 @@ function construirCenario() {
             const celula = document.createElement('div');
 
             celula.classList.add('celula');
+
             celula.style.top = `${l * TAMANHO_BLOCO}px`;
             celula.style.left = `${c * TAMANHO_BLOCO}px`;
 
@@ -148,11 +149,12 @@ function atualizarPosicaoVisual(elemento, linha, coluna) {
 }
 
 // ==========================================
-// 7. REGISTRAR COLISÃO
+// 7. REGISTRAR COLISÕES
 // ==========================================
 
 function registrarColisao(motivo) {
     colisoes++;
+
     colisoesTexto.textContent = colisoes;
     statusTexto.textContent = motivo;
 }
@@ -172,7 +174,59 @@ function posicaoValida(linha, coluna) {
 }
 
 // ==========================================
-// 9. MOVIMENTAR ROBÔ
+// 9. TELA DE DERROTA
+// ==========================================
+
+function perderJogo() {
+    if (missaoConcluida) return;
+
+    missaoConcluida = true;
+    emExecucao = false;
+    modoAutomatico = false;
+
+    clearInterval(intervaloLoop);
+    clearInterval(intervaloAuto);
+
+    intervaloLoop = null;
+    intervaloAuto = null;
+
+    registrarColisao('O drone capturou o robô!');
+
+    statusTexto.textContent = 'VOCÊ PERDEU!';
+    modoTexto.textContent = 'Derrota';
+
+    let tela = document.getElementById('tela-game-over');
+
+    if (!tela) {
+        tela = document.createElement('div');
+        tela.id = 'tela-game-over';
+
+        tela.innerHTML = `
+            <div class="game-over-conteudo">
+                <div class="game-over-emoji">🚨</div>
+
+                <h1>VOCÊ PERDEU!</h1>
+
+                <p>O drone conseguiu capturar seu robô!</p>
+
+                <button id="btn-tentar-novamente">
+                    🔄 Tentar novamente
+                </button>
+            </div>
+        `;
+
+        document.body.appendChild(tela);
+
+        document
+            .getElementById('btn-tentar-novamente')
+            .addEventListener('click', reiniciarSimulacao);
+    }
+
+    tela.style.display = 'flex';
+}
+
+// ==========================================
+// 10. MOVIMENTAR ROBÔ
 // ==========================================
 
 function moverRobo(dLinha, dColuna) {
@@ -186,23 +240,11 @@ function moverRobo(dLinha, dColuna) {
         return;
     }
 
-    // Se o robô entrar na posição do drone, perde.
+    // O robô entrou na posição do drone.
     if (
         novaLinha === dronePos.linha &&
         novaColuna === dronePos.coluna
     ) {
-        roboPos = {
-            linha: novaLinha,
-            coluna: novaColuna
-        };
-
-        atualizarPosicaoVisual(
-            roboEl,
-            roboPos.linha,
-            roboPos.coluna
-        );
-
-        registrarColisao('O robô foi capturado!');
         perderJogo();
         return;
     }
@@ -213,8 +255,8 @@ function moverRobo(dLinha, dColuna) {
     };
 
     passos++;
-    passosTexto.textContent = passos;
 
+    passosTexto.textContent = passos;
     statusTexto.textContent = 'Explorando terreno...';
 
     atualizarPosicaoVisual(
@@ -232,7 +274,7 @@ function moverRobo(dLinha, dColuna) {
 }
 
 // ==========================================
-// 10. BUSCAR CAMINHO (BFS)
+// 11. BUSCA DE CAMINHO - BFS
 // ==========================================
 
 function buscarCaminho(origem, destino, bloquearDrone = false) {
@@ -259,6 +301,7 @@ function buscarCaminho(origem, destino, bloquearDrone = false) {
         for (const [dl, dc] of DIRECOES) {
             const nl = atual.linha + dl;
             const nc = atual.coluna + dc;
+
             const chave = `${nl},${nc}`;
 
             if (!posicaoValida(nl, nc)) continue;
@@ -286,7 +329,7 @@ function buscarCaminho(origem, destino, bloquearDrone = false) {
 }
 
 // ==========================================
-// 11. DRONE PERSEGUE O ROBÔ
+// 12. MOVIMENTAÇÃO DO DRONE
 // ==========================================
 
 function atualizarDrone() {
@@ -318,28 +361,25 @@ function atualizarDrone() {
 
     let escolhido = null;
 
-    // 75% de chance de seguir o caminho até o robô.
-    if (caminho && caminho.length > 0 && Math.random() < 0.75) {
+    // 75% de chance de perseguir o robô.
+    if (
+        caminho &&
+        caminho.length > 0 &&
+        Math.random() < 0.75
+    ) {
         const [dl, dc] = caminho[0];
 
         escolhido = movimentosPossiveis.find(
-            m => m.dl === dl && m.dc === dc
+            movimento =>
+                movimento.dl === dl &&
+                movimento.dc === dc
         );
     }
 
-    // Se não seguir o caminho, anda de forma aleatória.
+    // Se não seguir o caminho, escolhe uma direção aleatória.
     if (!escolhido) {
-        const alternativas = movimentosPossiveis.filter(m =>
-            !(m.linha === roboPos.linha &&
-              m.coluna === roboPos.coluna)
-        );
-
-        const lista = alternativas.length
-            ? alternativas
-            : movimentosPossiveis;
-
-        escolhido = lista[
-            Math.floor(Math.random() * lista.length)
+        escolhido = movimentosPossiveis[
+            Math.floor(Math.random() * movimentosPossiveis.length)
         ];
     }
 
@@ -354,66 +394,13 @@ function atualizarDrone() {
         dronePos.coluna
     );
 
-    // O drone capturou o robô.
+    // O drone alcançou o robô.
     if (
         dronePos.linha === roboPos.linha &&
         dronePos.coluna === roboPos.coluna
     ) {
-        registrarColisao('O drone capturou o robô!');
         perderJogo();
     }
-}
-
-// ==========================================
-// 12. TELA VOCÊ PERDEU
-// ==========================================
-
-function perderJogo() {
-    if (missaoConcluida) return;
-
-    missaoConcluida = true;
-    emExecucao = false;
-
-    clearInterval(intervaloLoop);
-    clearInterval(intervaloAuto);
-
-    intervaloLoop = null;
-    intervaloAuto = null;
-
-    modoTexto.textContent = 'Derrota';
-    statusTexto.textContent = 'O drone capturou você!';
-
-    const telaAntiga = document.getElementById('tela-game-over');
-
-    if (telaAntiga) {
-        telaAntiga.remove();
-    }
-
-    const tela = document.createElement('div');
-
-    tela.id = 'tela-game-over';
-
-    tela.innerHTML = `
-        <div class="game-over">
-            <div class="game-over-icone">🚨</div>
-
-            <h1>VOCÊ PERDEU!</h1>
-
-            <p>O drone capturou seu robô!</p>
-
-            <span>Missão fracassada...</span>
-
-            <button id="btn-tentar-novamente">
-                🔄 Tentar novamente
-            </button>
-        </div>
-    `;
-
-    document.body.appendChild(tela);
-
-    document
-        .getElementById('btn-tentar-novamente')
-        .addEventListener('click', reiniciarSimulacao);
 }
 
 // ==========================================
@@ -464,10 +451,7 @@ function iniciarSimulacao() {
         ? 'Piloto automático em execução!'
         : 'Em execução! Use as setas.';
 
-    intervaloLoop = setInterval(
-        atualizarDrone,
-        650
-    );
+    intervaloLoop = setInterval(atualizarDrone, 650);
 
     if (modoAutomatico) {
         clearInterval(intervaloAuto);
@@ -502,10 +486,10 @@ function pausarSimulacao() {
 // ==========================================
 
 function reiniciarSimulacao() {
-    // Remove a tela de derrota, se existir.
-    document.getElementById('tela-game-over')?.remove();
-
     pausarSimulacao();
+
+    // Remove a tela de derrota.
+    document.getElementById('tela-game-over')?.remove();
 
     modoAutomatico = false;
     missaoConcluida = false;
@@ -513,8 +497,15 @@ function reiniciarSimulacao() {
     passos = 0;
     colisoes = 0;
 
-    roboPos = { linha: 0, coluna: 0 };
-    destinoPos = { linha: 9, coluna: 9 };
+    roboPos = {
+        linha: 0,
+        coluna: 0
+    };
+
+    destinoPos = {
+        linha: 9,
+        coluna: 9
+    };
 
     passosTexto.textContent = 0;
     colisoesTexto.textContent = 0;
@@ -528,7 +519,7 @@ function reiniciarSimulacao() {
 }
 
 // ==========================================
-// 17. ALTERNAR PILOTO AUTOMÁTICO
+// 17. PILOTO AUTOMÁTICO LIGAR/DESLIGAR
 // ==========================================
 
 function alternarPilotoAutomatico() {
@@ -581,7 +572,7 @@ function concluirMissao() {
 // 19. CONTROLES DO TECLADO
 // ==========================================
 
-document.addEventListener('keydown', (evento) => {
+document.addEventListener('keydown', function(evento) {
     if (!emExecucao || modoAutomatico || missaoConcluida) {
         return;
     }
@@ -603,7 +594,7 @@ document.addEventListener('keydown', (evento) => {
 });
 
 // ==========================================
-// 20. EVENTOS DOS BOTÕES
+// 20. BOTÕES
 // ==========================================
 
 document
@@ -622,18 +613,12 @@ document
     .getElementById('btn-auto')
     .addEventListener('click', alternarPilotoAutomatico);
 
-const botaoJogarNovamente =
-    document.getElementById('btn-jogar-novamente');
-
-if (botaoJogarNovamente) {
-    botaoJogarNovamente.addEventListener(
-        'click',
-        reiniciarSimulacao
-    );
-}
+document
+    .getElementById('btn-jogar-novamente')
+    .addEventListener('click', reiniciarSimulacao);
 
 // ==========================================
-// 21. INICIALIZAR
+// 21. INICIALIZAR JOGO
 // ==========================================
 
 construirCenario();

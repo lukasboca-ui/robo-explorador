@@ -1,101 +1,71 @@
 
-/* =====================================
-   TELA DE DERROTA
-===================================== */
+/* TELA DE DERROTA */
 
 #tela-game-over {
     position: fixed;
     inset: 0;
     z-index: 99999;
-
-    display: flex;
-    align-items: center;
+    display: none;
     justify-content: center;
-
-    background: rgba(0, 0, 0, 0.90);
-    backdrop-filter: blur(8px);
-
-    animation: aparecerTela 0.35s ease;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 20px;
 }
 
-.game-over {
-    width: 90%;
-    max-width: 430px;
-    padding: 40px 25px;
-
-    text-align: center;
-
-    background: #171923;
+.game-over-conteudo {
+    background: #1e293b;
     color: white;
-
-    border: 2px solid #ff3333;
+    padding: 40px 30px;
     border-radius: 20px;
-
-    box-shadow: 0 0 35px rgba(255, 40, 40, 0.45);
-
-    animation: aparecerCartao 0.4s ease;
+    text-align: center;
+    border: 3px solid #ef4444;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 0 35px rgba(239, 68, 68, 0.5);
+    animation: aparecerDerrota 0.3s ease;
 }
 
-.game-over-icone {
+.game-over-emoji {
     font-size: 65px;
-    margin-bottom: 10px;
 }
 
-.game-over h1 {
-    color: #ff3838;
-    font-size: 36px;
-    margin: 10px 0;
-    font-weight: 900;
-}
-
-.game-over p {
-    font-size: 18px;
+.game-over-conteudo h1 {
+    color: #ef4444;
+    font-size: 35px;
     margin: 15px 0;
 }
 
-.game-over span {
-    display: block;
-    color: #aaa;
-    font-size: 14px;
+.game-over-conteudo p {
+    color: white;
+    font-size: 16px;
     margin-bottom: 25px;
 }
 
-.game-over button {
-    padding: 14px 25px;
-    border: none;
-    border-radius: 10px;
-
-    background: #ff3333;
+#btn-tentar-novamente {
+    background: #ef4444;
     color: white;
-
+    border: none;
+    padding: 14px 25px;
+    border-radius: 10px;
     font-size: 16px;
     font-weight: bold;
-
     cursor: pointer;
-    transition: 0.2s;
 }
 
-.game-over button:hover {
-    background: #cc1717;
+#btn-tentar-novamente:hover {
+    background: #dc2626;
     transform: scale(1.05);
 }
 
-@keyframes aparecerTela {
+@keyframes aparecerDerrota {
     from {
         opacity: 0;
+        transform: scale(0.7);
     }
 
     to {
         opacity: 1;
-    }
-}
-
-@keyframes aparecerCartao {
-    from {
-        transform: scale(0.8);
-    }
-
-    to {
         transform: scale(1);
     }
 }
+
