@@ -1,5 +1,7 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,15 +17,15 @@
         <h1>🤖 Missão: Robô Explorador</h1>
 
         <p>
-            Guie o robô até a Base de Recarga usando as
-            <strong>setas do teclado</strong> ou ative o
-            <strong>Piloto Automático</strong>.
+            Guie o robô até a Base de Recarga usando as setas
+            ou o Piloto Automático.
         </p>
     </header>
 
     <main class="container">
 
-        <!-- Painel de informações -->
+        <!-- PAINEL NA ESQUERDA -->
+
         <aside class="painel-info">
 
             <h2>📊 Telemetria</h2>
@@ -48,7 +50,6 @@
                 <span id="contador-colisoes">0</span>
             </p>
 
-            <!-- Controles -->
             <div class="controles">
 
                 <button id="btn-iniciar">
@@ -69,37 +70,48 @@
 
             </div>
 
-            <!-- Legenda -->
             <div class="legenda">
 
-                <h3>Legenda:</h3>
+                <h3>🗺️ Legenda</h3>
 
                 <p>🟦 Partida</p>
                 <p>🟩 Destino</p>
                 <p>🧱 Rocha (Obstáculo fixo)</p>
-                <p>⚡ Drone Patrulha (Obstáculo móvel)</p>
+                <p>⚡ Drone Patrulha</p>
                 <p>🤖 Robô Explorador</p>
 
             </div>
 
-            <p class="dica">
-                💡 Utilize as setas do teclado para movimentar o robô.
-            </p>
+            <div class="instrucoes">
+
+                <h3>🎮 Como jogar</h3>
+
+                <p>⬆️ Seta para cima</p>
+                <p>⬇️ Seta para baixo</p>
+                <p>⬅️ Seta para esquerda</p>
+                <p>➡️ Seta para direita</p>
+
+            </div>
 
         </aside>
 
-        <!-- Área da animação -->
+
+        <!-- MAPA NA DIREITA -->
+
         <section class="area-simulacao">
 
-            <div id="cenario"></div>
+            <h2>🌎 Área de Exploração</h2>
 
-            <!-- Tela de vitória -->
+            <div id="cenario">
+                <!-- Mapa e personagens criados pelo JavaScript -->
+            </div>
+
             <div id="mensagem-vitoria" class="oculto">
 
                 <h2>🎉 Missão Concluída!</h2>
 
                 <p>
-                    O Robô Explorador chegou à Base de Recarga!
+                    O Robô Explorador chegou ao destino com sucesso!
                 </p>
 
                 <button id="btn-jogar-novamente">
@@ -115,4 +127,5 @@
     <script src="script.js"></script>
 
 </body>
+
 </html>
