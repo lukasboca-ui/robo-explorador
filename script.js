@@ -1,16 +1,11 @@
+
 // ==========================================
-// 1. VARIÁVEIS E CONFIGURAÇÕES
+// 1. CONFIGURAÇÕES E VARIÁVEIS
 // ==========================================
 
 const LINHAS = 10;
 const COLUNAS = 10;
 const TAMANHO_BLOCO = 10;
-
-// Mapa:
-// 0 = Caminho livre
-// 1 = Obstáculo
-// 2 = Partida
-// 3 = Destino
 
 const mapa = [
     [2, 0, 0, 1, 0, 0, 0, 0, 0, 0],
@@ -25,24 +20,10 @@ const mapa = [
     [0, 1, 0, 1, 0, 0, 0, 0, 1, 3]
 ];
 
-// Posições iniciais
+let roboPos = { linha: 0, coluna: 0 };
+let destinoPos = { linha: 9, coluna: 9 };
 
-let roboPos = {
-    linha: 0,
-    coluna: 0
-};
-
-let destinoPos = {
-    linha: 9,
-    coluna: 9
-};
-
-let dronePos = {
-    linha: 4,
-    coluna: 6
-};
-
-// Estados da simulação
+let dronePos = { linha: 4, coluna: 6 };
 
 let emExecucao = false;
 let modoAutomatico = false;
@@ -51,94 +32,51 @@ let missaoConcluida = false;
 let passos = 0;
 let colisoes = 0;
 
-// Temporizadores
-
 let intervaloLoop = null;
 let intervaloAuto = null;
-
-// Caminho do piloto automático
-
-let caminhoAutomatico = [];
-
-// Referências HTML
-
-const cenarioEl = document.getElementById('cenario');
-
-const statusTexto =
-    document.getElementById('status-texto');
-
-const modoTexto =
-    document.getElementById('modo-texto');
-
-const passosTexto =
-    document.getElementById('contador-passos');
-
-const colisoesTexto =
-    document.getElementById('contador-colisoes');
-
-const msgVitoria =
-    document.getElementById('mensagem-vitoria');
 
 let roboEl = null;
 let droneEl = null;
 
+let caminhoAutomatico = [];
 
 // ==========================================
-// 2. ROTA DE PATRULHA DO DRONE
+// 2. ROTA DO DRONE
 // ==========================================
-
-// O drone percorre 33 posições do mapa.
-// Depois de chegar ao final, volta pelo caminho.
 
 const rotaDrone = [
-    [4, 6],
-    [4, 7],
-    [4, 8],
-    [4, 9],
-    [3, 9],
-    [3, 8],
-    [2, 8],
-    [1, 8],
-    [0, 8],
-    [0, 7],
-    [0, 6],
-    [0, 5],
-    [0, 4],
-    [1, 4],
-    [2, 4],
-    [2, 3],
-    [2, 2],
-    [2, 1],
-    [2, 0],
-    [3, 0],
-    [4, 0],
-    [4, 1],
-    [4, 2],
-    [4, 3],
-    [4, 4],
-    [5, 4],
-    [6, 4],
-    [6, 5],
-    [6, 6],
-    [6, 7],
-    [6, 8],
-    [6, 9],
+    [4, 6], [4, 7], [4, 8], [4, 9],
+    [3, 9], [3, 8], [2, 8], [1, 8],
+    [0, 8], [0, 7], [0, 6], [0, 5],
+    [0, 4], [1, 4], [2, 4], [2, 3],
+    [2, 2], [2, 1], [2, 0], [3, 0],
+    [4, 0], [4, 1], [4, 2], [4, 3],
+    [4, 4], [5, 4], [6, 4], [6, 5],
+    [6, 6], [6, 7], [6, 8], [6, 9],
     [5, 9]
 ];
 
 let indiceRotaDrone = 0;
 let direcaoDrone = 1;
 
+// ==========================================
+// 3. ELEMENTOS HTML
+// ==========================================
+
+const cenarioEl = document.getElementById('cenario');
+const statusTexto = document.getElementById('status-texto');
+const modoTexto = document.getElementById('modo-texto');
+const passosTexto = document.getElementById('contador-passos');
+const colisoesTexto = document.getElementById('contador-colisoes');
+const msgVitoria = document.getElementById('mensagem-vitoria');
 
 // ==========================================
-// 3. CONSTRUÇÃO DO CENÁRIO
+// 4. CONSTRUIR CENÁRIO
 // ==========================================
 
 function construirCenario() {
 
     cenarioEl.innerHTML = '';
-
-    // Percorre todas as linhas e colunas.
 
     for (let l = 0; l < LINHAS; l++) {
 
@@ -148,13 +86,8 @@ function construirCenario() {
 
             celula.classList.add('celula');
 
-            celula.style.top =
-                `${l * TAMANHO_BLOCO}%`;
-
-            celula.style.left =
-                `${c * TAMANHO_BLOCO}%`;
-
-            // Verifica o tipo da célula.
+            celula.style.top = `${l * TAMANHO_BLOCO}%`;
+            celula.style.left = `${c * TAMANHO_BLOCO}%`;
 
             if (mapa[l][c] === 1) {
 
@@ -179,9 +112,8 @@ function construirCenario() {
     criarDrone();
 }
 
-
 // ==========================================
-// 4. CRIAÇÃO DO ROBÔ
+// 5. CRIAR ROBÔ
 // ==========================================
 
 function criarRobo() {
@@ -206,9 +138,8 @@ function criarRobo() {
     cenarioEl.appendChild(roboEl);
 }
 
-
 // ==========================================
-// 5. CRIAÇÃO DO DRONE
+// 6. CRIAR DRONE
 // ==========================================
 
 function criarDrone() {
@@ -235,21 +166,30 @@ function criarDrone() {
     cenarioEl.appendChild(droneEl);
 }
 
-
-// Atualiza a posição visual dos elementos.
+// ==========================================
+// 7. ATUALIZAR POSIÇÃO VISUAL
+// ==========================================
 
 function atualizarPosicaoVisual(elemento, linha, coluna) {
 
-    elemento.style.top =
-        `${linha * TAMANHO_BLOCO}%`;
-
-    elemento.style.left =
-        `${coluna * TAMANHO_BLOCO}%`;
+    elemento.style.top = `${linha * TAMANHO_BLOCO}%`;
+    elemento.style.left = `${coluna * TAMANHO_BLOCO}%`;
 }
 
+// ==========================================
+// 8. REGISTRAR COLISÕES
+// ==========================================
+
+function registrarColisao(motivo) {
+
+    colisoes++;
+
+    colisoesTexto.textContent = colisoes;
+    statusTexto.textContent = motivo;
+}
 
 // ==========================================
-// 6. MOVIMENTAÇÃO DO ROBÔ
+// 9. MOVIMENTAR ROBÔ
 // ==========================================
 
 function moverRobo(dLinha, dColuna) {
@@ -259,7 +199,7 @@ function moverRobo(dLinha, dColuna) {
     const novaLinha = roboPos.linha + dLinha;
     const novaColuna = roboPos.coluna + dColuna;
 
-    // Verifica os limites do mapa.
+    // Verificar limites.
 
     if (
         novaLinha < 0 ||
@@ -272,7 +212,7 @@ function moverRobo(dLinha, dColuna) {
         return;
     }
 
-    // Verifica as rochas.
+    // Verificar rochas.
 
     if (mapa[novaLinha][novaColuna] === 1) {
 
@@ -280,7 +220,7 @@ function moverRobo(dLinha, dColuna) {
         return;
     }
 
-    // Verifica o drone.
+    // Verificar drone.
 
     if (
         novaLinha === dronePos.linha &&
@@ -291,7 +231,7 @@ function moverRobo(dLinha, dColuna) {
         return;
     }
 
-    // Movimento permitido.
+    // Executar movimento.
 
     roboPos.linha = novaLinha;
     roboPos.coluna = novaColuna;
@@ -300,8 +240,7 @@ function moverRobo(dLinha, dColuna) {
 
     passosTexto.textContent = passos;
 
-    statusTexto.textContent =
-        'Explorando terreno...';
+    statusTexto.textContent = 'Explorando terreno...';
 
     atualizarPosicaoVisual(
         roboEl,
@@ -309,7 +248,7 @@ function moverRobo(dLinha, dColuna) {
         roboPos.coluna
     );
 
-    // Verifica se chegou à bateria.
+    // Verificar chegada.
 
     if (
         roboPos.linha === destinoPos.linha &&
@@ -320,23 +259,29 @@ function moverRobo(dLinha, dColuna) {
     }
 }
 
-
 // ==========================================
-// 7. REGISTRO DE COLISÕES
+// 10. PRÓXIMA POSIÇÃO DO DRONE
 // ==========================================
 
-function registrarColisao(motivo) {
+function calcularProximaPosicaoDrone() {
 
-    colisoes++;
+    let proximoIndice =
+        indiceRotaDrone + direcaoDrone;
 
-    colisoesTexto.textContent = colisoes;
+    if (
+        proximoIndice >= rotaDrone.length ||
+        proximoIndice < 0
+    ) {
 
-    statusTexto.textContent = motivo;
+        proximoIndice =
+            indiceRotaDrone - direcaoDrone;
+    }
+
+    return rotaDrone[proximoIndice];
 }
 
-
 // ==========================================
-// 8. MOVIMENTAÇÃO DO DRONE
+// 11. MOVIMENTAÇÃO DO DRONE
 // ==========================================
 
 function atualizarDrone() {
@@ -346,7 +291,7 @@ function atualizarDrone() {
     let proximoIndice =
         indiceRotaDrone + direcaoDrone;
 
-    // Inverte a direção quando chega ao final.
+    // Inverter ao chegar ao final da rota.
 
     if (
         proximoIndice >= rotaDrone.length ||
@@ -359,13 +304,12 @@ function atualizarDrone() {
             indiceRotaDrone + direcaoDrone;
     }
 
-    const proximaPosicao =
-        rotaDrone[proximoIndice];
+    const proximaPosicao = rotaDrone[proximoIndice];
 
     const novaLinha = proximaPosicao[0];
     const novaColuna = proximaPosicao[1];
 
-    // Verifica se o drone atingiu o robô.
+    // Detectar colisão do drone com o robô.
 
     if (
         novaLinha === roboPos.linha &&
@@ -376,12 +320,7 @@ function atualizarDrone() {
             'Atingido pelo Drone! Voltando à partida...'
         );
 
-        // Devolve o robô à partida.
-
-        roboPos = {
-            linha: 0,
-            coluna: 0
-        };
+        roboPos = { linha: 0, coluna: 0 };
 
         atualizarPosicaoVisual(
             roboEl,
@@ -389,12 +328,8 @@ function atualizarDrone() {
             roboPos.coluna
         );
 
-        // Descarta o caminho antigo.
-
         caminhoAutomatico = [];
     }
-
-    // Atualiza a posição do drone.
 
     indiceRotaDrone = proximoIndice;
 
@@ -408,14 +343,11 @@ function atualizarDrone() {
     );
 }
 
-
 // ==========================================
-// 9. PILOTO AUTOMÁTICO - BFS
+// 12. CALCULAR CAMINHO SEGURO - BFS
 // ==========================================
 
 function calcularCaminhoAutomatico() {
-
-    // Fila utilizada na busca em largura.
 
     const fila = [{
         linha: roboPos.linha,
@@ -429,8 +361,6 @@ function calcularCaminhoAutomatico() {
         `${roboPos.linha},${roboPos.coluna}`
     );
 
-    // Movimentos possíveis.
-
     const direcoes = [
         [-1, 0],
         [1, 0],
@@ -438,25 +368,61 @@ function calcularCaminhoAutomatico() {
         [0, 1]
     ];
 
+    // Prever algumas posições futuras do drone.
+    // Isso reduz a chance de o robô escolher uma rota
+    // que cruza a patrulha.
+
+    const casasPerigosas = new Set();
+
+    let indicePrevisto = indiceRotaDrone;
+    let direcaoPrevista = direcaoDrone;
+
+    casasPerigosas.add(
+        `${dronePos.linha},${dronePos.coluna}`
+    );
+
+    for (let i = 1; i <= 5; i++) {
+
+        let proximoIndice =
+            indicePrevisto + direcaoPrevista;
+
+        if (
+            proximoIndice >= rotaDrone.length ||
+            proximoIndice < 0
+        ) {
+
+            direcaoPrevista *= -1;
+
+            proximoIndice =
+                indicePrevisto + direcaoPrevista;
+        }
+
+        indicePrevisto = proximoIndice;
+
+        const posicao =
+            rotaDrone[indicePrevisto];
+
+        casasPerigosas.add(
+            `${posicao[0]},${posicao[1]}`
+        );
+    }
+
     while (fila.length > 0) {
 
         const atual = fila.shift();
 
         const l = atual.linha;
         const c = atual.coluna;
-        const caminho = atual.caminho;
 
-        // Verifica se chegou ao destino.
+        // Chegou à bateria.
 
         if (
             l === destinoPos.linha &&
             c === destinoPos.coluna
         ) {
 
-            return caminho;
+            return atual.caminho;
         }
-
-        // Testa todas as direções.
 
         for (const [dl, dc] of direcoes) {
 
@@ -471,12 +437,11 @@ function calcularCaminhoAutomatico() {
                 nc >= 0 &&
                 nc < COLUNAS;
 
-            // Verifica se o caminho é permitido.
-
             if (
                 dentroDoMapa &&
                 mapa[nl][nc] !== 1 &&
-                !visitados.has(chave)
+                !visitados.has(chave) &&
+                !casasPerigosas.has(chave)
             ) {
 
                 visitados.add(chave);
@@ -487,7 +452,7 @@ function calcularCaminhoAutomatico() {
                     coluna: nc,
 
                     caminho: [
-                        ...caminho,
+                        ...atual.caminho,
                         [dl, dc]
                     ]
                 });
@@ -498,9 +463,8 @@ function calcularCaminhoAutomatico() {
     return null;
 }
 
-
 // ==========================================
-// 10. EXECUÇÃO DO PILOTO AUTOMÁTICO
+// 13. PILOTO AUTOMÁTICO
 // ==========================================
 
 function executarPilotoAutomatico() {
@@ -511,40 +475,35 @@ function executarPilotoAutomatico() {
         missaoConcluida
     ) return;
 
-    // Calcula a rota atual.
+    // Recalcular a rota em cada movimento.
 
     caminhoAutomatico =
         calcularCaminhoAutomatico();
 
-    // Verifica se existe caminho.
+    // Não encontrou caminho seguro.
 
     if (caminhoAutomatico === null) {
 
         statusTexto.textContent =
-            'Não foi possível encontrar uma rota!';
-
-        pausarSimulacao();
+            'Drone no caminho! Procurando outra rota...';
 
         return;
     }
 
-    // Se já está no destino.
+    // Já chegou ao destino.
 
     if (caminhoAutomatico.length === 0) {
 
         concluirMissao();
-
         return;
     }
-
-    // Escolhe o próximo movimento.
 
     const [dl, dc] = caminhoAutomatico[0];
 
     const proximaLinha = roboPos.linha + dl;
     const proximaColuna = roboPos.coluna + dc;
 
-    // Espera se o drone estiver na próxima casa.
+    // Verificar novamente o drone antes de andar.
 
     if (
         proximaLinha === dronePos.linha &&
@@ -552,48 +511,16 @@ function executarPilotoAutomatico() {
     ) {
 
         statusTexto.textContent =
-            'Aguardando drone passar...';
+            'Aguardando o drone passar...';
 
         return;
     }
 
-    // Executa o movimento.
-
     moverRobo(dl, dc);
 }
 
-
 // ==========================================
-// 11. INICIAR A SIMULAÇÃO
-// ==========================================
-
-function iniciarSimulacao() {
-
-    if (emExecucao || missaoConcluida) return;
-
-    emExecucao = true;
-
-    statusTexto.textContent =
-        'Em execução! Use as setas.';
-
-    // Inicia a movimentação do drone.
-
-    intervaloLoop = setInterval(
-        atualizarDrone,
-        600
-    );
-
-    // Inicia o piloto se estiver ativado.
-
-    if (modoAutomatico) {
-
-        iniciarIntervaloAutomatico();
-    }
-}
-
-
-// ==========================================
-// 12. INTERVALO DO PILOTO AUTOMÁTICO
+// 14. INICIAR PILOTO AUTOMÁTICO
 // ==========================================
 
 function iniciarIntervaloAutomatico() {
@@ -606,9 +533,31 @@ function iniciarIntervaloAutomatico() {
     );
 }
 
+// ==========================================
+// 15. INICIAR SIMULAÇÃO
+// ==========================================
+
+function iniciarSimulacao() {
+
+    if (emExecucao || missaoConcluida) return;
+
+    emExecucao = true;
+
+    statusTexto.textContent =
+        'Em execução! Use as setas.';
+
+    intervaloLoop = setInterval(
+        atualizarDrone,
+        600
+    );
+
+    if (modoAutomatico) {
+        iniciarIntervaloAutomatico();
+    }
+}
 
 // ==========================================
-// 13. PAUSAR A SIMULAÇÃO
+// 16. PAUSAR SIMULAÇÃO
 // ==========================================
 
 function pausarSimulacao() {
@@ -628,9 +577,8 @@ function pausarSimulacao() {
     }
 }
 
-
 // ==========================================
-// 14. REINICIAR A SIMULAÇÃO
+// 17. REINICIAR SIMULAÇÃO
 // ==========================================
 
 function reiniciarSimulacao() {
@@ -645,6 +593,9 @@ function reiniciarSimulacao() {
     passos = 0;
     colisoes = 0;
 
+    roboPos = { linha: 0, coluna: 0 };
+    destinoPos = { linha: 9, coluna: 9 };
+
     passosTexto.textContent = 0;
     colisoesTexto.textContent = 0;
 
@@ -655,14 +606,11 @@ function reiniciarSimulacao() {
 
     msgVitoria.classList.add('oculto');
 
-    // Reconstrói o mapa e reinicia os elementos.
-
     construirCenario();
 }
 
-
 // ==========================================
-// 15. ALTERNAR PILOTO AUTOMÁTICO
+// 18. ALTERNAR PILOTO AUTOMÁTICO
 // ==========================================
 
 function alternarPilotoAutomatico() {
@@ -675,11 +623,10 @@ function alternarPilotoAutomatico() {
 
     if (modoAutomatico) {
 
-        modoTexto.textContent =
-            'Automático (IA)';
+        modoTexto.textContent = 'Automático (IA)';
 
         statusTexto.textContent =
-            'Piloto Automático ativado!';
+            'Calculando rota segura até a bateria...';
 
         if (!emExecucao) {
 
@@ -692,11 +639,11 @@ function alternarPilotoAutomatico() {
 
     } else {
 
-        modoTexto.textContent = 'Manual';
-
         clearInterval(intervaloAuto);
 
         intervaloAuto = null;
+
+        modoTexto.textContent = 'Manual';
 
         statusTexto.textContent =
             emExecucao
@@ -705,9 +652,8 @@ function alternarPilotoAutomatico() {
     }
 }
 
-
 // ==========================================
-// 16. CONCLUIR A MISSÃO
+// 19. CONCLUIR MISSÃO
 // ==========================================
 
 function concluirMissao() {
@@ -720,18 +666,15 @@ function concluirMissao() {
 
     modoAutomatico = false;
 
-    modoTexto.textContent =
-        'Missão concluída';
+    modoTexto.textContent = 'Missão concluída';
 
-    statusTexto.textContent =
-        'Destino alcançado!';
+    statusTexto.textContent = 'Destino alcançado!';
 
     msgVitoria.classList.remove('oculto');
 }
 
-
 // ==========================================
-// 17. EVENTOS DO TECLADO
+// 20. CONTROLES DO TECLADO
 // ==========================================
 
 document.addEventListener('keydown', (evento) => {
@@ -757,9 +700,8 @@ document.addEventListener('keydown', (evento) => {
     }
 });
 
-
 // ==========================================
-// 18. EVENTOS DOS BOTÕES
+// 21. EVENTOS DOS BOTÕES
 // ==========================================
 
 document.getElementById('btn-iniciar')
@@ -777,9 +719,8 @@ document.getElementById('btn-auto')
 document.getElementById('btn-jogar-novamente')
     .addEventListener('click', reiniciarSimulacao);
 
-
 // ==========================================
-// 19. INICIALIZAÇÃO DO PROJETO
+// 22. INICIALIZAR PROJETO
 // ==========================================
 
 construirCenario();
