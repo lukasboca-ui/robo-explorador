@@ -1,0 +1,23 @@
+
+flowchart TD
+    A([Início]) --> B[Construir cenário e posicionar elementos]
+    B --> C[Aguardar interação]
+    C --> D{Iniciar simulação?}
+    D -->|Não| C
+    D -->|Sim| E{Modo automático?}
+    E -->|Não| F[Receber tecla direcional]
+    E -->|Sim| G[Calcular caminho usando BFS]
+    G --> H[Escolher próximo movimento]
+    F --> I[Verificar movimento]
+    H --> I
+    I --> J{Movimento válido?}
+    J -->|Não| K[Registrar colisão]
+    J -->|Sim| L[Mover robô e contar passos]
+    K --> M[Atualizar drone]
+    L --> M
+    M --> N{Chegou ao destino?}
+    N -->|Sim| O[Mostrar mensagem de vitória]
+    N -->|Não| P{Simulação pausada?}
+    P -->|Sim| C
+    P -->|Não| E
+    O --> Q([Fim])

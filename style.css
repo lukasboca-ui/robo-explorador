@@ -1,3 +1,4 @@
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -25,6 +26,10 @@ header h1 {
     margin-bottom: 5px;
 }
 
+header p {
+    line-height: 1.6;
+}
+
 .container {
     display: flex;
     gap: 25px;
@@ -33,7 +38,6 @@ header h1 {
     align-items: flex-start;
 }
 
-/* Painel Lateral */
 .painel-info {
     background-color: #1e293b;
     padding: 20px;
@@ -54,6 +58,7 @@ header h1 {
 .painel-info p {
     margin-bottom: 10px;
     font-size: 0.95rem;
+    overflow-wrap: anywhere;
 }
 
 .controles {
@@ -96,32 +101,31 @@ button:active {
     padding: 10px;
     border-radius: 8px;
     font-size: 0.85rem;
-    line-height: 1.6;
+    line-height: 1.8;
 }
 
-/* Área do Cenário */
 .area-simulacao {
     position: relative;
+    width: min(500px, 100%);
 }
 
 #cenario {
     position: relative;
-    width: 500px;
-    height: 500px;
+    width: 100%;
+    aspect-ratio: 1;
     background-color: #1e293b;
     background-image: radial-gradient(#334155 1px, transparent 1px);
-    background-size: 50px 50px; /* Grade de 10x10 blocos de 50px */
+    background-size: 10% 10%;
     border: 4px solid #38bdf8;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);
 }
 
-/* Elementos do Cenário */
 .celula {
     position: absolute;
-    width: 50px;
-    height: 50px;
+    width: 10%;
+    height: 10%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -132,7 +136,6 @@ button:active {
     border: 2px dashed #38bdf8;
 }
 
-/* Elemento Animado 1: Destino pulsante */
 .destino {
     background-color: rgba(34, 197, 94, 0.3);
     border: 2px solid #22c55e;
@@ -140,11 +143,14 @@ button:active {
 }
 
 @keyframes pulsarDestino {
-    from { box-shadow: inset 0 0 5px #22c55e; }
-    to { box-shadow: inset 0 0 20px #22c55e; }
+    from {
+        box-shadow: inset 0 0 5px #22c55e;
+    }
+    to {
+        box-shadow: inset 0 0 20px #22c55e;
+    }
 }
 
-/* Obstáculos */
 .obstaculo {
     background-color: #475569;
     border: 2px solid #64748b;
@@ -152,12 +158,11 @@ button:active {
     font-size: 24px;
 }
 
-/* Elemento Animado 2: Robô Explorador */
 #robo {
     position: absolute;
-    width: 44px;
-    height: 44px;
-    margin: 3px;
+    width: 8.8%;
+    height: 8.8%;
+    margin: 0.6%;
     background-color: #f59e0b;
     border-radius: 10px;
     border: 2px solid #fef08a;
@@ -169,7 +174,6 @@ button:active {
     z-index: 10;
 }
 
-/* Antena piscante do Robô */
 #robo::before {
     content: '';
     width: 8px;
@@ -182,13 +186,19 @@ button:active {
 }
 
 @keyframes piscarAntena {
-    from { background-color: #ef4444; box-shadow: 0 0 2px #ef4444; }
-    to { background-color: #fca5a5; box-shadow: 0 0 10px #ef4444; }
+    from {
+        background-color: #ef4444;
+        box-shadow: 0 0 2px #ef4444;
+    }
+    to {
+        background-color: #fca5a5;
+        box-shadow: 0 0 10px #ef4444;
+    }
 }
 
 .visor-robo {
-    width: 30px;
-    height: 12px;
+    width: 70%;
+    height: 30%;
     background-color: #0f172a;
     border-radius: 4px;
     display: flex;
@@ -203,12 +213,11 @@ button:active {
     border-radius: 50%;
 }
 
-/* Elemento Animado 3: Drone de Patrulha */
 .drone {
     position: absolute;
-    width: 40px;
-    height: 40px;
-    margin: 5px;
+    width: 8%;
+    height: 8%;
+    margin: 1%;
     background-color: #e11d48;
     border-radius: 50%;
     display: flex;
@@ -221,11 +230,14 @@ button:active {
 }
 
 @keyframes girarDrone {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
-/* Tela de Vitória */
 #mensagem-vitoria {
     position: absolute;
     top: 0;
@@ -256,4 +268,22 @@ button:active {
 
 .oculto {
     display: none !important;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    .painel-info {
+        width: 100%;
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    .area-simulacao {
+        width: 100%;
+    }
 }

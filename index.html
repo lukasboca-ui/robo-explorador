@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -7,19 +8,36 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
     <header>
         <h1>🤖 Missão: Robô Explorador</h1>
-        <p>Guie o robô até a Base de Recarga usando as <strong>setas do teclado</strong> ou ative o <strong>Piloto Automático</strong>.</p>
+        <p>
+            Guie o robô até a Base de Recarga usando as
+            <strong>setas do teclado</strong> ou ative o
+            <strong>Piloto Automático</strong>.
+        </p>
     </header>
 
     <main class="container">
-        <!-- Painel de Informações e Status -->
+
         <aside class="painel-info">
             <h2>📊 Telemetria</h2>
-            <p><strong>Status:</strong> <span id="status-texto">Aguardando início...</span></p>
-            <p><strong>Modo:</strong> <span id="modo-texto">Manual</span></p>
-            <p><strong>Passos:</strong> <span id="contador-passos">0</span></p>
-            <p><strong>Colisões:</strong> <span id="contador-colisoes">0</span></p>
+
+            <p><strong>Status:</strong>
+                <span id="status-texto">Aguardando início...</span>
+            </p>
+
+            <p><strong>Modo:</strong>
+                <span id="modo-texto">Manual</span>
+            </p>
+
+            <p><strong>Passos:</strong>
+                <span id="contador-passos">0</span>
+            </p>
+
+            <p><strong>Colisões:</strong>
+                <span id="contador-colisoes">0</span>
+            </p>
 
             <div class="controles">
                 <button id="btn-iniciar">▶ Iniciar</button>
@@ -30,23 +48,28 @@
 
             <div class="legenda">
                 <h3>Legenda:</h3>
-                <p>🟦 Partida | 🟩 Destino</p>
+                <p>🟦 Partida</p>
+                <p>🟩 Destino</p>
                 <p>🧱 Rocha (Obstáculo fixo)</p>
                 <p>⚡ Drone Patrulha (Obstáculo móvel)</p>
+                <p>🤖 Robô Explorador</p>
             </div>
         </aside>
 
-        <!-- Cenário do Jogo -->
         <section class="area-simulacao">
-            <div id="cenario">
-                <!-- Os blocos do mapa, o robô e elementos animados são gerados via JS/CSS -->
-            </div>
+
+            <div id="cenario"></div>
+
             <div id="mensagem-vitoria" class="oculto">
                 <h2>🎉 Missão Concluída!</h2>
                 <p>O Robô Explorador chegou ao destino com sucesso!</p>
-                <button id="btn-jogar-novamente">Jogar Novamente</button>
+                <button id="btn-jogar-novamente">
+                    Jogar Novamente
+                </button>
             </div>
+
         </section>
+
     </main>
 
     <script src="script.js"></script>
