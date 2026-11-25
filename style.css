@@ -1,4 +1,3 @@
-
 /* =====================================
    1. CONFIGURAÇÕES GERAIS
 ===================================== */
@@ -408,5 +407,48 @@ button:active {
 
     button {
         font-size: 0.75rem;
+    }
+}
+/* COLOCAR OS COMANDOS E O MAPA LADO A LADO */
+
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 30px;
+    max-width: 1400px;
+    width: 95%;
+    margin: 30px auto;
+}
+
+/* PAINEL DE COMANDOS À ESQUERDA */
+.painel-info {
+    flex: 0 0 350px;
+    width: 350px;
+}
+
+/* MAPA À DIREITA */
+.area-simulacao {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+}
+
+/* RESPONSIVIDADE PARA CELULAR */
+@media (max-width: 850px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .painel-info {
+        width: 100%;
+        max-width: 450px;
+        flex-basis: auto;
+    }
+
+    .area-simulacao {
+        width: 100%;
     }
 }
