@@ -1,3 +1,4 @@
+
 /* =====================================
    1. CONFIGURAÇÕES GERAIS
 ===================================== */
@@ -47,12 +48,12 @@ header p {
     align-items: flex-start;
     gap: 25px;
     width: 100%;
-    max-width: 1000px;
+    max-width: 1400px;
     margin: auto;
 }
 
 /* =====================================
-   4. PAINEL LATERAL DE INFORMAÇÕES
+   4. PAINEL LATERAL
 ===================================== */
 
 .painel-info {
@@ -99,7 +100,7 @@ header p {
 }
 
 /* =====================================
-   5. BOTÕES DE CONTROLE
+   5. BOTÕES
 ===================================== */
 
 .controles {
@@ -163,7 +164,14 @@ button:active {
 
 .area-simulacao {
     position: relative;
-    flex-shrink: 0;
+    flex: 0 0 500px;
+    width: 500px;
+}
+
+.area-simulacao h2 {
+    margin-bottom: 15px;
+    color: #38bdf8;
+    text-align: center;
 }
 
 #cenario {
@@ -207,7 +215,6 @@ button:active {
     from {
         box-shadow: inset 0 0 5px #22c55e;
     }
-
     to {
         box-shadow: inset 0 0 20px #22c55e;
     }
@@ -256,7 +263,6 @@ button:active {
         background: #ef4444;
         box-shadow: 0 0 2px #ef4444;
     }
-
     to {
         background: #fca5a5;
         box-shadow: 0 0 10px #ef4444;
@@ -304,7 +310,6 @@ button:active {
     from {
         transform: rotate(0deg);
     }
-
     to {
         transform: rotate(360deg);
     }
@@ -367,8 +372,10 @@ button:active {
 
     .area-simulacao {
         width: 100%;
+        flex: none;
         display: flex;
-        justify-content: center;
+        flex-direction: column;
+        align-items: center;
     }
 
     #cenario {
@@ -407,48 +414,5 @@ button:active {
 
     button {
         font-size: 0.75rem;
-    }
-}
-/* COLOCAR OS COMANDOS E O MAPA LADO A LADO */
-
-.container {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 30px;
-    max-width: 1400px;
-    width: 95%;
-    margin: 30px auto;
-}
-
-/* PAINEL DE COMANDOS À ESQUERDA */
-.painel-info {
-    flex: 0 0 350px;
-    width: 350px;
-}
-
-/* MAPA À DIREITA */
-.area-simulacao {
-    flex: 1;
-    min-width: 0;
-    text-align: center;
-}
-
-/* RESPONSIVIDADE PARA CELULAR */
-@media (max-width: 850px) {
-    .container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .painel-info {
-        width: 100%;
-        max-width: 450px;
-        flex-basis: auto;
-    }
-
-    .area-simulacao {
-        width: 100%;
     }
 }
