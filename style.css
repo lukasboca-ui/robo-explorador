@@ -1,125 +1,130 @@
-/* =================================
+
+/* =====================================
    1. CONFIGURAÇÕES GERAIS
-================================= */
+===================================== */
 
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-    background-color: #12161f;
+    background: #12161f;
     color: #e2e8f0;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
     min-height: 100vh;
-    padding: 20px;
+    padding: 25px;
 }
 
-/* =================================
+/* =====================================
    2. CABEÇALHO
-================================= */
+===================================== */
 
 header {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 header h1 {
     color: #38bdf8;
-    margin-bottom: 8px;
+    font-size: 2rem;
+    margin-bottom: 10px;
 }
 
 header p {
-    line-height: 1.6;
+    color: #cbd5e1;
+    line-height: 1.5;
 }
 
-/* =================================
+/* =====================================
    3. ORGANIZAÇÃO PRINCIPAL
-================================= */
+===================================== */
 
 .container {
     display: flex;
-    gap: 25px;
-
-    flex-wrap: wrap;
+    flex-direction: row;
     justify-content: center;
     align-items: flex-start;
+    gap: 25px;
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
 }
 
-/* =================================
-   4. PAINEL DE INFORMAÇÕES
-================================= */
+/* =====================================
+   4. PAINEL LATERAL DE INFORMAÇÕES
+===================================== */
 
 .painel-info {
-    background-color: #1e293b;
-
-    padding: 20px;
-    border-radius: 12px;
-
+    background: #1e293b;
+    padding: 22px;
+    border-radius: 14px;
     width: 280px;
-
+    min-width: 260px;
+    flex-shrink: 0;
     border: 1px solid #334155;
-
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
 }
 
 .painel-info h2 {
     color: #38bdf8;
-
-    margin-bottom: 15px;
-    font-size: 1.2rem;
-
-    border-bottom: 1px solid #334155;
-    padding-bottom: 8px;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #475569;
 }
 
 .painel-info p {
-    margin-bottom: 10px;
     font-size: 0.95rem;
-    overflow-wrap: anywhere;
+    margin-bottom: 14px;
+    line-height: 1.4;
 }
 
-.dica {
-    margin-top: 15px;
-    color: #7dd3fc;
+#status-texto {
+    color: #4ade80;
 }
 
-/* =================================
-   5. BOTÕES
-================================= */
+#modo-texto {
+    color: #c084fc;
+}
+
+#contador-passos {
+    color: #38bdf8;
+    font-weight: bold;
+}
+
+#contador-colisoes {
+    color: #fb7185;
+    font-weight: bold;
+}
+
+/* =====================================
+   5. BOTÕES DE CONTROLE
+===================================== */
 
 .controles {
     display: grid;
     grid-template-columns: 1fr 1fr;
-
     gap: 10px;
-    margin: 20px 0;
+    margin: 25px 0;
 }
 
 button {
-    padding: 10px;
-
+    padding: 12px 8px;
     border: none;
-    border-radius: 6px;
-
+    border-radius: 8px;
     font-weight: bold;
+    font-size: 0.85rem;
     cursor: pointer;
-
-    background-color: #0284c7;
+    background: #0284c7;
     color: white;
-
-    transition: transform 0.1s, background-color 0.2s;
+    transition: 0.2s;
 }
 
 button:hover {
-    background-color: #0369a1;
+    background: #0369a1;
+    transform: translateY(-2px);
 }
 
 button:active {
@@ -128,94 +133,78 @@ button:active {
 
 #btn-auto {
     grid-column: span 2;
-    background-color: #7c3aed;
+    background: #7c3aed;
 }
 
 #btn-auto:hover {
-    background-color: #6d28d9;
+    background: #6d28d9;
 }
 
-/* =================================
+/* =====================================
    6. LEGENDA
-================================= */
+===================================== */
 
 .legenda {
-    background-color: #0f172a;
-
-    padding: 10px;
-    border-radius: 8px;
-
+    background: #0f172a;
+    padding: 14px;
+    border-radius: 9px;
     font-size: 0.85rem;
     line-height: 1.8;
+    border: 1px solid #334155;
 }
 
-/* =================================
-   7. CENÁRIO DO JOGO
-================================= */
+.legenda h3 {
+    color: #38bdf8;
+    margin-bottom: 8px;
+}
+
+/* =====================================
+   7. ÁREA DO MAPA
+===================================== */
 
 .area-simulacao {
     position: relative;
-    width: min(500px, 100%);
+    flex-shrink: 0;
 }
 
 #cenario {
     position: relative;
-
-    width: 100%;
-    aspect-ratio: 1 / 1;
-
+    width: 500px;
+    height: 500px;
     background-color: #1e293b;
-
-    background-image:
-        radial-gradient(#334155 1px, transparent 1px);
-
-    background-size: 10% 10%;
-
+    background-image: radial-gradient(#334155 1px, transparent 1px);
+    background-size: 50px 50px;
     border: 4px solid #38bdf8;
-    border-radius: 8px;
-
+    border-radius: 10px;
     overflow: hidden;
-
     box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);
 }
 
-/* =================================
+/* =====================================
    8. CÉLULAS DO MAPA
-================================= */
+===================================== */
 
 .celula {
     position: absolute;
-
-    width: 10%;
-    height: 10%;
-
+    width: 50px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* Partida */
-
 .partida {
-    background-color: rgba(56, 189, 248, 0.25);
-
+    background: rgba(56, 189, 248, 0.25);
     border: 2px dashed #38bdf8;
 }
 
-/* =================================
-   9. DESTINO ANIMADO
-================================= */
-
 .destino {
-    background-color: rgba(34, 197, 94, 0.3);
-
+    background: rgba(34, 197, 94, 0.3);
     border: 2px solid #22c55e;
-
     animation: pulsarDestino 1.5s infinite alternate;
 }
 
 @keyframes pulsarDestino {
-
     from {
         box-shadow: inset 0 0 5px #22c55e;
     }
@@ -223,108 +212,63 @@ button:active {
     to {
         box-shadow: inset 0 0 20px #22c55e;
     }
-
 }
 
-/* =================================
-   10. OBSTÁCULOS
-================================= */
-
 .obstaculo {
-    background-color: #475569;
-
+    background: #475569;
     border: 2px solid #64748b;
     border-radius: 6px;
-
     font-size: 24px;
 }
 
-/* =================================
-   11. ROBÔ EXPLORADOR ANIMADO
-================================= */
+/* =====================================
+   9. ROBÔ EXPLORADOR
+===================================== */
 
 #robo {
     position: absolute;
-
-    width: 8.8%;
-    height: 8.8%;
-
-    margin: 0.6%;
-
-    background-color: #f59e0b;
-
+    width: 44px;
+    height: 44px;
+    margin: 3px;
+    background: #f59e0b;
     border-radius: 10px;
     border: 2px solid #fef08a;
-
     display: flex;
     flex-direction: column;
-
     align-items: center;
     justify-content: center;
-
     transition: left 0.15s ease, top 0.15s ease;
-
     z-index: 10;
-
-    animation: respirarRobo 1.5s infinite alternate;
 }
-
-/* Movimento de respiração */
-
-@keyframes respirarRobo {
-
-    from {
-        box-shadow: 0 0 3px #f59e0b;
-    }
-
-    to {
-        box-shadow: 0 0 12px #f59e0b;
-    }
-
-}
-
-/* Antena piscante */
 
 #robo::before {
     content: '';
-
     width: 8px;
     height: 8px;
-
-    background-color: #ef4444;
-
+    background: #ef4444;
     border-radius: 50%;
-
     position: absolute;
     top: -6px;
-
     animation: piscarAntena 0.6s infinite alternate;
 }
 
 @keyframes piscarAntena {
-
     from {
-        background-color: #ef4444;
+        background: #ef4444;
         box-shadow: 0 0 2px #ef4444;
     }
 
     to {
-        background-color: #fca5a5;
+        background: #fca5a5;
         box-shadow: 0 0 10px #ef4444;
     }
-
 }
 
-/* Visor */
-
 .visor-robo {
-    width: 70%;
-    height: 30%;
-
-    background-color: #0f172a;
-
+    width: 30px;
+    height: 12px;
+    background: #0f172a;
     border-radius: 4px;
-
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -333,61 +277,31 @@ button:active {
 .olho {
     width: 6px;
     height: 6px;
-
-    background-color: #38bdf8;
-
+    background: #38bdf8;
     border-radius: 50%;
-
-    animation: piscarOlhos 3s infinite;
 }
 
-@keyframes piscarOlhos {
-
-    0%, 90%, 100% {
-        opacity: 1;
-    }
-
-    95% {
-        opacity: 0.2;
-    }
-
-}
-
-/* =================================
-   12. DRONE ANIMADO
-================================= */
+/* =====================================
+   10. DRONE DE PATRULHA
+===================================== */
 
 .drone {
     position: absolute;
-
-    width: 8%;
-    height: 8%;
-
-    margin: 1%;
-
-    background-color: #e11d48;
-
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    background: #e11d48;
     border-radius: 50%;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     font-size: 20px;
-
     box-shadow: 0 0 12px #e11d48;
-
     z-index: 5;
-
-    animation:
-        girarDrone 2s linear infinite,
-        flutuarDrone 0.8s ease-in-out infinite alternate;
-
-    transition: left 0.25s ease, top 0.25s ease;
+    animation: girarDrone 2s linear infinite;
 }
 
 @keyframes girarDrone {
-
     from {
         transform: rotate(0deg);
     }
@@ -395,56 +309,33 @@ button:active {
     to {
         transform: rotate(360deg);
     }
-
 }
 
-@keyframes flutuarDrone {
-
-    from {
-        filter: brightness(0.8);
-    }
-
-    to {
-        filter: brightness(1.5);
-    }
-
-}
-
-/* =================================
-   13. TELA DE VITÓRIA
-================================= */
+/* =====================================
+   11. MENSAGEM DE VITÓRIA
+===================================== */
 
 #mensagem-vitoria {
     position: absolute;
-
     top: 0;
     left: 0;
-
     width: 100%;
     height: 100%;
-
-    background-color: rgba(15, 23, 42, 0.94);
-
+    background: rgba(15, 23, 42, 0.94);
     display: flex;
     flex-direction: column;
-
     align-items: center;
     justify-content: center;
-
     text-align: center;
-
     z-index: 20;
-
     border-radius: 8px;
-
     padding: 20px;
 }
 
 #mensagem-vitoria h2 {
     color: #22c55e;
-
     font-size: 2rem;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 #mensagem-vitoria p {
@@ -452,32 +343,70 @@ button:active {
     font-size: 1.1rem;
 }
 
-/* Esconder elementos */
-
 .oculto {
     display: none !important;
 }
 
-/* =================================
-   14. RESPONSIVIDADE
-================================= */
+/* =====================================
+   12. RESPONSIVIDADE
+===================================== */
 
-@media (max-width: 600px) {
+@media (max-width: 850px) {
 
     body {
-        padding: 10px;
+        padding: 15px;
     }
 
     .container {
-        width: 100%;
+        flex-direction: column;
+        align-items: center;
     }
 
     .painel-info {
-        width: 100%;
+        width: min(500px, 100%);
     }
 
     .area-simulacao {
         width: 100%;
+        display: flex;
+        justify-content: center;
     }
 
+    #cenario {
+        width: min(500px, 90vw);
+        height: min(500px, 90vw);
+        background-size: 10% 10%;
+    }
+
+    .celula {
+        width: 10%;
+        height: 10%;
+    }
+
+    #robo {
+        width: calc(10% - 6px);
+        height: calc(10% - 6px);
+        margin: 3px;
+    }
+
+    .drone {
+        width: calc(10% - 10px);
+        height: calc(10% - 10px);
+        margin: 5px;
+    }
+}
+
+@media (max-width: 400px) {
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    .painel-info {
+        padding: 15px;
+    }
+
+    button {
+        font-size: 0.75rem;
+    }
 }
